@@ -4,6 +4,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 lightfield_path = "data/chessboard_lightfield.png"
+mosaic_path = "output/mosaic.png"
+# f0 is the image with focus at the top
+f0_path = "output/f0.png"
+f1_path = "output/f1.png"
+f2_path = "output/f2.png"
+f3_path = "output/f3.png"
+f4_path = "output/f4.png"
 
 # code taken from writeup
 lensletSize = 16
@@ -80,18 +87,12 @@ def refocus(img_5d, d=0):
   # average over all 256 images in the mosaic
   refocus_img /= 256.0
   refocus_img /= 255.0
-  plt.imshow(refocus_img)
-  plt.show()
 
-def gen_focal_stack(img_5d, d_range):
-  for d in range(d_range):
-    r = refocus_img(img_5d, d)
-    io.imsave("", r)
+  # normalized
+  return refocus_img
 
 def main():
   img_5d = load_lightfield_image()
-  # mosaic = create_mosaic(img_5d)
-  refocus(img_5d, -1.0)
-
+  depth_and_allfocus()
 
 main()
