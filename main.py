@@ -1,7 +1,10 @@
 from skimage import io
+from skimage.morphology import disk
 from scipy import interpolate
+from scipy import signal
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 lightfield_path = "data/chessboard_lightfield.png"
 mosaic_path = "output/mosaic.png"
@@ -18,8 +21,11 @@ maxUV = (lensletSize - 1) / 2
 u_ctrs = np.arange(lensletSize) - maxUV
 v_ctrs = np.arange(lensletSize) - maxUV
 
+Fs = np.arange(-1.6, 0.4, 0.4)
+As = np.arange(1.0, 9.0, 1.0)
+
 def load_lightfield_image():
-  img_raw = io.imread(lightfield_path)
+  img_raw = io.imread(lightfield_path)/255.0
   lf = []
   for s in range(16):
     ls = []
@@ -75,6 +81,33 @@ def shift_img(img, u, v, d):
   new_img = np.dstack((zr_new, zg_new, zb_new))
   return new_img
 
+
+def blur_lightfield(img_5d, asize):
+  img_disk = disk(asize)
+  blur_img_5d = np.zeros((img_5d.shape))
+  area = math.pi * math.pow(asize, 2)
+
+  for u in range(16):
+    for v in range(16):
+      # original_img = img_5d[u,v,:,:,:]
+      for i in range(3):
+        # original_img = img_5d[u,v,:,:,i].copy()
+        # imgc = img_5d[u,v,:,:,i].copy()
+        imgc = img_5d[u,v,:,:,i]
+        blur_img_5d[u,v,:,:,i] = signal.convolve2d(imgc, img_disk, mode='same')/area
+        # diff_img = original_img - new_img
+
+      # new_img = blur_img_5d[u,v,:,:,:]
+      # diff_img = original_img - new_img
+      # fig = plt.figure()
+      # fig.add_subplot(2,1,1)
+      # plt.imshow(original_img)
+      # fig.add_subplot(2,1,2)
+      # plt.imshow(new_img)
+      # plt.show()
+
+  return blur_img_5d
+
 def refocus(img_5d, d=0):
   refocus_img = np.zeros((400,700,3))
 
@@ -86,13 +119,28 @@ def refocus(img_5d, d=0):
 
   # average over all 256 images in the mosaic
   refocus_img /= 256.0
-  refocus_img /= 255.0
+  # refocus_img /= 255.0
 
   # normalized
   return refocus_img
 
+def AFI(img_5d, pu, pv):
+  AFI = np.zeros((7,5, 3))
+  for a in range(7):
+    lf = blur_lightfield(img_5d, As[a])
+    for f in range(5):
+      print("refocus")
+      rlf = refocus(lf, Fs[f])
+      AFI[a][f] = rlf[pu][pv]
+
+
+  plt.imshow(AFI)
+  plt.show()
+  return AFI
+
 def main():
   img_5d = load_lightfield_image()
-  depth_and_allfocus()
+  # depth_and_allfocus()
+  AFI(img_5d, 270, 500)
 
 main()

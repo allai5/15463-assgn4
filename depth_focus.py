@@ -8,8 +8,8 @@ import cv2
 
 ks1 = 5
 ks2 = 5
-sig1 = 7.0
-sig2 = 1.5
+sig1 = 2.0
+sig2 = 2.0
 depth_const = 10.0
 
 def depth_and_allfocus(fstack_dir):
@@ -29,7 +29,7 @@ def depth_and_allfocus(fstack_dir):
     img_hfq = img_lum - img_lfq
 
     depth_i = np.ones((400, 700))
-    depth_i *= (i * 0.4)
+    depth_i *= (i * -0.4)
 
     wsharp = cv2.GaussianBlur(np.square(img_hfq), (ks2, ks2), sig2)
     wsharp_i = np.dstack((wsharp, wsharp, wsharp))
@@ -37,9 +37,9 @@ def depth_and_allfocus(fstack_dir):
     img_depth += np.multiply(wsharp, depth_i)
     wsharp_all += wsharp_i
 
-  wsharp_all += 0.0005
   img_focus /= wsharp_all
-  img_depth /= wsharp_all[:,:,0]
+  img_focus = np.nan_to_num(img_focus)
+  img_depth = np.divide(img_depth, wsharp_all[:,:,0])
   # plt.imshow(img_focus/255.0)
   # plt.show()
   plt.imshow(img_depth/255.0, cmap='gray')
