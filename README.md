@@ -33,8 +33,8 @@
 
 ### Focal-aperture stack and confocal stereo
 
-    - main.py, L145
-    - main.py, L120
+    - generate depth map from confocal stereo: main.py, L145
+    - generate aperture stack mosaic: main.py, L120
 
 #### Image Files
 

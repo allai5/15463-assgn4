@@ -7,13 +7,13 @@ import numpy as np
 import math
 
 lightfield_path = "data/chessboard_lightfield.png"
-mosaic_path = "output/mosaic.png"
+mosaic_path = "media/mosaic.png"
 # f0 is the image with focus at the top
-f0_path = "output/f0.png"
-f1_path = "output/f1.png"
-f2_path = "output/f2.png"
-f3_path = "output/f3.png"
-f4_path = "output/f4.png"
+f0_path = "media/f0.png"
+f1_path = "media/f1.png"
+f2_path = "media/f2.png"
+f3_path = "media/f3.png"
+f4_path = "media/f4.png"
 
 # code taken from writeup
 lensletSize = 16
@@ -115,7 +115,7 @@ def AFI(img_5d):
         (AFIs[i])[a-1][f] = rlf[pu[i]][pv[i]]
 
   for i in range(5):
-    io.imsave("output/afi_%d_%d.png" % (pu[i], pv[i]), AFIs[i])
+    io.imsave("media/afi_%d_%d.png" % (pu[i], pv[i]), AFIs[i])
 
 def af_mosaic(img_5d):
   # should result in a (6400, 11200, 3) image

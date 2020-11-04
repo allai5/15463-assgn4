@@ -122,8 +122,8 @@ def video_refocus(video_path, gpatch, num_frames, swu, swv, subsample):
   # focus_img /= length
   focus_img /= (num_frames)
   focus_img *= 255
-  # cv2.imwrite("output/custom_focus_mouse.png", focus_img)
-  cv2.imwrite("output/custom_focus_cow.png", focus_img)
+  # cv2.imwrite("media/custom_focus_mouse.png", focus_img)
+  cv2.imwrite("media/custom_focus_cow.png", focus_img)
   return focus_img
 
 def check_window(video_path, su0, sv0, su1, sv1, s):
@@ -142,7 +142,7 @@ def check_window(video_path, su0, sv0, su1, sv1, s):
 
 
 def main():
-  video_path = "output/DSC_0015.MOV"
+  video_path = "media/DSC_0015.MOV"
   # focus on cow
   gpatch = [350, 680, 450, 780]
   # focus on mouse

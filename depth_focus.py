@@ -42,4 +42,4 @@ def depth_and_allfocus(fstack_dir):
   io.imsave("depth.png", img_depth)
   io.imsave("all_focus.png", img_focus)
 
-depth_and_allfocus("output/focal_stack/")
+depth_and_allfocus("media/focal_stack/")
