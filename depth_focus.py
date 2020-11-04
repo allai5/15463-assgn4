@@ -6,11 +6,10 @@ import os
 from cp_hw2 import lRGB2XYZ
 import cv2
 
-ks1 = 5
-ks2 = 5
-sig1 = 2.0
-sig2 = 2.0
-depth_const = 10.0
+ks1 = 21
+ks2 = 13
+sig1 = 32.0
+sig2 = 32.0
 
 def depth_and_allfocus(fstack_dir):
   # weights are the same for all of the color channels
@@ -40,9 +39,7 @@ def depth_and_allfocus(fstack_dir):
   img_focus /= wsharp_all
   img_focus = np.nan_to_num(img_focus)
   img_depth = np.divide(img_depth, wsharp_all[:,:,0])
-  # plt.imshow(img_focus/255.0)
-  # plt.show()
-  plt.imshow(img_depth/255.0, cmap='gray')
-  plt.show()
+  io.imsave("depth.png", img_depth)
+  io.imsave("all_focus.png", img_focus)
 
 depth_and_allfocus("output/focal_stack/")
